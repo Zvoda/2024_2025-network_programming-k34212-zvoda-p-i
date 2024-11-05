@@ -1,0 +1,12 @@
+- name: Configuration
+  hosts: devices
+  tasks:
+    - name: Set Name
+      community.routeros.command:
+        commands:
+          - /system identity set name="{{interfaces[0].device.name}}"
+    - name: Set IP-address
+      community.routeros.command:
+        commands:
+        - /interface bridge add name="{{interfaces[1].display}}"
+        - /ip address add address="{{interfaces[1].ip_addresses[0].address}}" interface="{{interfaces[1].display}}"
