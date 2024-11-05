@@ -1,0 +1,17 @@
+- name: Serial Numbers
+  hosts: devices
+  tasks:
+    - name: Serial Number
+      community.routeros.command:
+        commands:
+          - /system license print
+      register: license
+    - name: Add Serial Number
+      netbox_device:
+        netbox_url: http://130.193.42.42:8080/
+        netbox_token: созданный_токен
+        data:
+          name: "{{interfaces[0].device.name}}"
+          serial: "{{license.stdout_lines[0][0].split(' ').1}}"
+        state: present
+        validate_certs: False
